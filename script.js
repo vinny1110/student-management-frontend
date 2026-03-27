@@ -1,4 +1,4 @@
-const API = "http://localhost:3000/students";
+const API = "http://localhost:5000/students";
 let studentsData = [];
 
 // Fetch all students
@@ -17,7 +17,7 @@ function displayStudents(data) {
     list.innerHTML += `
       <div class="student">
         <span>${s.name} (${s.age})</span>
-        <button class="delete-btn" onclick="deleteStudent(${s.id})">Delete</button>
+        <button onclick="deleteStudent('${s._id}')">Delete</button>
       </div>
     `;
   });
@@ -49,13 +49,17 @@ async function addStudent() {
 
 // Delete student
 async function deleteStudent(id) {
-  await fetch(`${API}/${id}`, {
-    method: "DELETE"
-  });
+  try {
+    await fetch(`http://localhost:5000/students/${id}`, {
+      method: "DELETE"
+    });
 
-  fetchStudents();
+    fetchStudents(); // refresh list
+
+  } catch (err) {
+    console.error("Delete error:", err);
+  }
 }
-
 // Search
 function searchStudent() {
   const search = document.getElementById("search").value.toLowerCase();
