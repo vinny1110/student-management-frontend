@@ -29,6 +29,7 @@ h1 {
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
+  flex-wrap: wrap;
 }
 
 input {
@@ -60,24 +61,25 @@ button:hover {
   opacity: 0.9;
 }
 
+/* Search */
 #search {
   width: 100%;
   margin-top: 10px;
 }
 
+/* Student List */
 .student-list {
   margin-top: 20px;
 }
 
 .student {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 12px;
   background: #f8f9ff;
   margin-bottom: 10px;
   border-radius: 10px;
-  transition: 0.3s;
 }
 
 .student:hover {
@@ -86,15 +88,23 @@ button:hover {
 }
 
 .student span {
+  flex: 1;
   font-weight: 500;
   color: #333;
 }
 
+/* Buttons container */
 .actions {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  min-width: 140px;
+  justify-content: flex-end;
 }
 
+.student span {
+  flex: 1;
+}
+/* Delete button */
 .delete-btn {
   background: #ff4d4d;
 }
@@ -103,10 +113,20 @@ button:hover {
   background: #cc0000;
 }
 
+/* Edit button */
 .edit-btn {
   background: #22c55e;
 }
 
 .edit-btn:hover {
   background: #15803d;
+}
+
+/* Cancel button */
+.cancel-btn {
+  background: #6b7280;
+}
+
+.cancel-btn:hover {
+  background: #374151;
 }

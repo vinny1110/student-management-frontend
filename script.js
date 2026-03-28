@@ -1,5 +1,6 @@
 const API = "http://localhost:5000/students";
 let studentsData = [];
+let editId = null;
 
 // Fetch all students
 async function fetchStudents() {
@@ -17,13 +18,18 @@ function displayStudents(data) {
     list.innerHTML += `
       <div class="student">
         <span>${s.name} (${s.age})</span>
-        <button onclick="deleteStudent('${s._id}')">Delete</button>
+
+        <div class="actions">
+          <button class="edit-btn" onclick="editStudent('${s._id}', '${s.name}', '${s.age}')">Edit</button>
+          <button class="delete-btn" onclick="deleteStudent('${s._id}')">Delete</button>
+        </div>
+
       </div>
     `;
   });
 }
 
-// Add student
+// ➕ Add OR 🔁 Update student
 async function addStudent() {
   const name = document.getElementById("name").value;
   const age = document.getElementById("age").value;
@@ -33,34 +39,64 @@ async function addStudent() {
     return;
   }
 
-  await fetch(API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ name, age })
-  });
+  if (editId) {
+    // 🔁 UPDATE
+    await fetch(`${API}/${editId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, age })
+    });
 
+    editId = null; // reset after update
+
+  } else {
+    // ➕ ADD
+    await fetch(API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, age })
+    });
+  }
+
+  // Clear inputs
   document.getElementById("name").value = "";
   document.getElementById("age").value = "";
+
+  // ✅ RESET BUTTON TEXT BACK
+  document.getElementById("submitBtn").innerText = "Add Student";
 
   fetchStudents();
 }
 
-// Delete student
+// ✏️ Edit student (fill form)
+function editStudent(id, name, age) {
+  document.getElementById("name").value = name;
+  document.getElementById("age").value = age;
+
+  editId = id;
+
+  // ✅ CHANGE BUTTON TEXT TO UPDATE
+  document.getElementById("submitBtn").innerText = "Update Student";
+}
+
+// ❌ Delete student
 async function deleteStudent(id) {
   try {
-    await fetch(`http://localhost:5000/students/${id}`, {
+    await fetch(`${API}/${id}`, {
       method: "DELETE"
     });
 
-    fetchStudents(); // refresh list
-
+    fetchStudents();
   } catch (err) {
     console.error("Delete error:", err);
   }
 }
-// Search
+
+// 🔍 Search
 function searchStudent() {
   const search = document.getElementById("search").value.toLowerCase();
 

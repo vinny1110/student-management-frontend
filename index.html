@@ -14,7 +14,12 @@
     <div class="form">
       <input id="name" placeholder="Enter Name">
       <input id="age" placeholder="Enter Age" type="number">
-      <button onclick="addStudent()">Add Student</button>
+      
+      <!-- ✅ Main Button -->
+      <button id="submitBtn" onclick="addStudent()">Add Student</button>
+      
+      <!-- ✅ Cancel Button (for update mode) -->
+      <button onclick="cancelEdit()">Cancel</button>
     </div>
 
     <!-- Search -->
